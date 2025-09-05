@@ -63,3 +63,8 @@ wwctl configure -a
 podman system prune -af # for space considerations
 find /opt/warewulf/var/warewulf/provision/ -name '*.img' | xargs -n1 truncate -s0 # we don't need the uncompressed images but warewulfd expects them to be there
 rm -r /root/.cache
+
+### zero out disk so compression can do it's job ######################
+dd if=/dev/zero of=/zerofile bs=1M status=progress
+sync
+rm /zerofile
