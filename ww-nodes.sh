@@ -61,4 +61,5 @@ wwctl configure -a
 
 ### clean up docker stuff: ############################################
 podman system prune -af # for space considerations
+find /opt/warewulf/var/warewulf/provision/ -name '*.img' | xargs -n1 truncate -s0 # we don't need the uncompressed images but warewulfd expects them to be there
 rm -r /root/.cache
