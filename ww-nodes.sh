@@ -53,8 +53,8 @@ wwctl profile set default --kernelargs="console=ttyS0" --yes
 wwctl node add boxocluster-node-[2-4] -I 10.0.0.12 --discoverable
 
 ### build containers and overlays: ####################################
-wwctl container syncuser --write --build --nocompression base-rocky9 
-wwctl overlay build --nocompression
+wwctl container syncuser --write --build base-rocky9
+wwctl overlay build
 
 ### reconfigure warewulf w/ new chagnes ###############################
 wwctl configure -a
