@@ -39,12 +39,13 @@ mkdir -p /apps/pkgs
 chmod g+w /apps
 
 ### change rocky to admin as per docs: ###
-sed -i 's/rocky/admin/g' /etc/passwd /etc/group /etc/shadow
+#sed -i 's/rocky/admin/g' /etc/passwd /etc/group /etc/shadow
+useradd -m -G wheel -u 1000 -g 1000 admin
 # sed is used since usage of usermod requires no running processes belonging to the user
 usermod -p '$5$cOTJhkxlC4$kEFPIJaKPriv16lcwNBsS4dVMT1sC/a9vFPNlZDHug1' admin
 mv /home/{rocky,admin}
 
-### copy public/private keys: ##
+### copy public/private keys: ###
 mkdir /home/admin/.ssh
 cp $BASEDIR/configs/admin_privkey /home/admin/.ssh/id_rsa
 cp $BASEDIR/configs/admin_pubkey /home/admin/.ssh/authorized_keys
@@ -56,7 +57,7 @@ mkdir /root/.ssh # already exists on rocky. possibly remove
 cp /home/admin/.ssh/* /root/.ssh/
 
 ### create additional users: ###
-useradd -m -g users -p '$5$cOTJhkxlC4$kEFPIJaKPriv16lcwNBsS4dVMT1sC/a9vFPNlZDHug1' -s /bin/bash -u 1001 -g 1001 user
+useradd -m -g users -p '$5$cOTJhkxlC4$kEFPIJaKPriv16lcwNBsS4dVMT1sC/a9vFPNlZDHug1' -s /bin/bash -u 1001 user
 #        ^- creates home dir automatically w/ contents of /etc/skel
 
 ### copy needed configs: ###

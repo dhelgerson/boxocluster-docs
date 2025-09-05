@@ -100,7 +100,7 @@ According to whether your client is running, Windows, MacOS, or Linux, you'll ha
 - Add the following line to `/etc/hosts`:
 
 ```bash
-10.0.0.2 pi-hpc-head01.pi.local
+10.0.0.11 pi-hpc-head01.pi.local
 ```
 
 **For Windows:**
@@ -113,7 +113,7 @@ Ensure “All Files” is selected as the file type, as the hosts file does not 
 - Add the following entry to the end
 
 ```bash
-10.0.0.2 pi-hpc-head01.pi.local
+10.0.0.11 pi-hpc-head01.pi.local
 ```
 
 - Save the File: After making changes, click File > Save to save the file. You may need to save it again if Notepad warns that the file has been modified by another program.

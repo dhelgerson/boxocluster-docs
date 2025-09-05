@@ -60,7 +60,7 @@ Replace "04" in the loop bounds with however many storage nodes are present
 Now from any other storage node, run:
 
 ```bash
-sudo gluster peer probe pi-hpc-compute01
+sudo gluster peer probe boxocluster-node-1
 sudo gluster peer status
 ```
 

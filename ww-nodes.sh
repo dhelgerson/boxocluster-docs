@@ -47,6 +47,7 @@ wwctl configure -a
 wwctl profile set --container base-rocky9 default --yes
 #wwctl profile set --ipxe dracut default --yes
 wwctl profile set --netdev ens3 default --yes
+wwctl profile set default --kernelargs="console=ttyS0"
 
 ### add nodes #########################################################
 wwctl node add boxocluster-node-[2-4] -I 10.0.0.12 --discoverable

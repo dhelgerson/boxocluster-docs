@@ -153,7 +153,7 @@ Next, you'll need to edit `/etc/chrony.conf` to be the following:
 
 ```bash
 driftfile /var/lib/chony/drift
-server 10.0.0.2 iburst
+server 10.0.0.11 iburst
 ```
 
 Note: here, `iburst` is very important; it tells chrony to immediately sync with the server upon boot.

@@ -1,3 +1,2 @@
-pi-hpc-compute[01-04]	compute,nodes
-#pi-hpc-storage[01-04]	storage,nodes
-pi-hpc-head01		head,pdsh_all_skip
+boxocluster-node-[2-4]	compute,nodes
+boxocluster-node-1		head,pdsh_all_skip

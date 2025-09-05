@@ -18,7 +18,7 @@ While having it connected to the cluster via ethernet (currently not easy to do 
 
 ```bash
 TODO: placeholder
-ip a add 10.0.0.2 dev eth0
+ip a add 10.0.0.11 dev eth0
 ```
 
 ## Head Node Config

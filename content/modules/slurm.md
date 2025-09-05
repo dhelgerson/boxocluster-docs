@@ -249,10 +249,10 @@ If all is good, the output of `sinfo -Nl` should look like the following:
 
 ```sql
 NODELIST          NODES PARTITION       STATE CPUS    S:C:T MEMORY TMP_DISK WEIGHT AVAIL_FE REASON              
-pi-hpc-compute01      1   pi-hpc*        idle 4       1:4:1   3794        0      1   (null) none                
-pi-hpc-compute02      1   pi-hpc*        idle 4       1:4:1   3794        0      1   (null) none                
-pi-hpc-compute03      1   pi-hpc*        idle 4       1:4:1   3794        0      1   (null) none                
-pi-hpc-compute04      1   pi-hpc*        idle 4       1:4:1   3794        0      1   (null) none 
+boxocluster-node-1      1   pi-hpc*        idle 4       1:4:1   3794        0      1   (null) none                
+boxocluster-node-2      1   pi-hpc*        idle 4       1:4:1   3794        0      1   (null) none                
+boxocluster-node-3      1   pi-hpc*        idle 4       1:4:1   3794        0      1   (null) none                
+boxocluster-node-4      1   pi-hpc*        idle 4       1:4:1   3794        0      1   (null) none 
 ```
 
 Finally, you should be able to run commands on the compute ndoes without using `pdsh`:
@@ -264,10 +264,10 @@ srun --nodes=4 hostname
 Output should look like this:
 
 ```bash
-pi-hpc-compute02
-pi-hpc-compute01
-pi-hpc-compute03
-pi-hpc-compute04
+boxocluster-node-2
+boxocluster-node-1
+boxocluster-node-3
+boxocluster-node-4
 ```
 
 ## [Next Module - Supporting Software](supporting-software)
