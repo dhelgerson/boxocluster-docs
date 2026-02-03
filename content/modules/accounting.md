@@ -92,7 +92,7 @@ The next time you logon as the user, you'll be prompted to set your preferred pa
 ## Signing into the WebGUI (Optional)
 
 Along with the CLI, FreeIPA provides an intuitive Web-based Graphical User Interface (WebGUI) to manage the system.
-The WebGUI is available at [http://pi-hpc-head01.pi.local](http://pi-hpc-head01.pi.local), however, since the dns server is local to the pi's you'll have to do a little configuration to access it.
+The WebGUI is available at [http://boxocluster-node-1.pi.local](http://boxocluster-node-1.pi.local), however, since the dns server is local to the pi's you'll have to do a little configuration to access it.
 
 According to whether your client is running, Windows, MacOS, or Linux, you'll have to follow different instructions.
 
@@ -100,7 +100,7 @@ According to whether your client is running, Windows, MacOS, or Linux, you'll ha
 - Add the following line to `/etc/hosts`:
 
 ```bash
-10.0.0.11 pi-hpc-head01.pi.local
+10.0.0.11 boxocluster-node-1.pi.local
 ```
 
 **For Windows:**
@@ -113,12 +113,12 @@ Ensure “All Files” is selected as the file type, as the hosts file does not 
 - Add the following entry to the end
 
 ```bash
-10.0.0.11 pi-hpc-head01.pi.local
+10.0.0.11 boxocluster-node-1.pi.local
 ```
 
 - Save the File: After making changes, click File > Save to save the file. You may need to save it again if Notepad warns that the file has been modified by another program.
 
-Once completed, use a browser to navigate to [pi-hpc-head01.pi.local](pi-hpc-head01.pi.local). 
+Once completed, use a browser to navigate to [boxocluster-node-1.pi.local](boxocluster-node-1.pi.local). 
 Login with the Username:password of admin:tuxcluster. 
 Instructions can be read from [their docs](https://www.freeipa.org/page/Documentation.html)
 

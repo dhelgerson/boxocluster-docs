@@ -6,7 +6,7 @@
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-project = 'boxocluster'
+project = 'Boxocluster'
 copyright = '2026, SIGHPC'
 author = 'SIGHPC'
 

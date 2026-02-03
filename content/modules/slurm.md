@@ -61,13 +61,13 @@ Now edit the config to reflect your configuration (only *changed and added lines
 
 ```conf
 ## General
-SlurmctldHost=pi-hpc-head01
+SlurmctldHost=boxocluster-node-1
 MpiDefault=pmi2
 # ^- this will need to be updated to pmix
 ProctrackType=proctrack/linuxproc
 
 ## Logging and Accounting
-AccountingStorageHost=pi-hpc-head01
+AccountingStorageHost=boxocluster-node-1
 AccountingStoragePort=6819
 AccountingStorageType=accounting_storage/slurmdbd
 ClusterName=<your_cluster_name>
@@ -86,7 +86,7 @@ Finally, we need to create the `/etc/slurm/slurmdbd.conf` file for the Slurm dat
 
 ```conf
 AuthType=auth/munge
-DbdHost=pi-hpc-head01
+DbdHost=boxocluster-node-1
 DbdPort=6819
 SlurmUser=slurm
 DebugLevel=verbose

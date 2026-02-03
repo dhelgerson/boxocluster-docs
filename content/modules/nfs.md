@@ -22,7 +22,7 @@ A few things you will need to know:
 - Your cluster will be accessible using a private IP range. The optional **'pi-hpc-terminal'** node will be configured to have an interface in this private range.
   - It is suggested that you use `10.0.0.101` with a subnet of `255.255.255.0` if you aren't using a Pi Zero terminal.
 - The nodes will be assigned names and IP addresses as follows:
-  - **pi-hpc-head01** - `10.0.0.2`
+  - **boxocluster-node-1** - `10.0.0.2`
   - **pi-hpc-terminal** - `10.0.0.101`
   - **pi-hpc-compute[01-40]** - `10.0.0.11-50`
   - **pi-hpc-storage[01-40]** - `10.0.0.51-90`

@@ -44,7 +44,7 @@ Links are to recommended specific listing, quantitites are dependent on what is 
 ### Downloads
 
 - [Raspberry Pi Imager](https://www.raspberrypi.com/software/): used to put images on SD cards for the Raspberry Pis.
-- [Head-Node Image](https://j3b.in/pihpc/pi-hpc-head01-full.img.xz): the image needed to prepare the head node is available in a compressed, raw disk image format.
+- [Head-Node Image](https://j3b.in/pihpc/boxocluster-node-1-full.img.xz): the image needed to prepare the head node is available in a compressed, raw disk image format.
 - [Github Repo](https://github.com/userjack6880/picluster/tree/ww-wip): while it's not recommended, the scripts required to create the head-node image can be viewed, on the github.
 
 ## Important Information
@@ -60,7 +60,7 @@ Links are to recommended specific listing, quantitites are dependent on what is 
 
 | Hostname              | Address        |
 | --------------------- | -------------- |
-| pi-hpc-head01         | `10.0.0.2`     |
+| boxocluster-node-1         | `10.0.0.2`     |
 | pi-hpc-compute[01-40] | `10.0.0.11-50` |
 
 <!-- | pi-hpc-storage[01-40] | `10.0.0.51-90` | we're ignoring storage for now -->
