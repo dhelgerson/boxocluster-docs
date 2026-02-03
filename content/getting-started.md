@@ -13,7 +13,7 @@ Docker is native on linux. Ensure you have docker-compose v2 installed, then do 
 ```bash
 git clone https://github.com/dhelgerson/boxocluster.git
 cd boxocluster
-curl -LO https://j3b.in/boxocluster/boxocluster-node-1.qcow2
+curl -LO https://boxocluster.com/boxocluster-node-1.qcow2
 docker compose up -d
 docker compose logs -f &
 ```
@@ -25,7 +25,7 @@ docker compose logs -f &
 If you don't have sudo, you're not out of luck. apptainer runs in userspace and can also be used. Run the following and follow the instructions.
 
 ```bash
-curl -LO https://j3b.in/boxocluster/boxocluster-node-1.qcow2
+curl -LO https://boxocluster.com/boxocluster-node-1.qcow2
 apptainer run --containall \
   --cwd $PWD \
   --bind /dev/kvm:/dev/kvm \
