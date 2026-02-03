@@ -9,7 +9,9 @@ In this digital era, the demand for scalable and efficient computing solutions c
 ```{toctree}
 :maxdepth: 1
 :caption: Index:
+
 about
+getting-started
 ```
 
 ```{toctree}
@@ -27,8 +29,6 @@ modules/hello-world
 modules/accounting
 ```
 
-
 <!-- TODO: not rn 
 <!-- - [Module 11 - Parallel Storage (Optional)](module-11) -->
-<!-- - Module 12 - GPU Compute (Optional)            plans need to be finalized for this -->
 <!-- - Module 14 - Challenges                        also john -->
