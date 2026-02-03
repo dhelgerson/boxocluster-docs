@@ -12,18 +12,22 @@ Welcome to PI HPC, an tool for instructors and students to explore the world of 
 
 In this digital era, the demand for scalable and efficient computing solutions continues to rise. Understanding how to harness the power of cluster computing is becoming increasingly essential across various fields, from data science and artificial intelligence to scientific research and beyond.
 
-# Modules
+```{toctree}
+:maxdepth: 1
+:numbered:
+:caption: Index:
+:glob:
 
-- [Cluster Preparation](modules/preparation)
-- [Sharing Storage](modules/nfs)
-- [Sytem Provisioning](modules/ww)
-- [Keeping Time](modules/chrony)
-- [Scheduling Processes](modules/slurm)
-- [Supporting Software](modules/supporting-software)
-- [Hello World(s)!](modules/hello-world)
-- [Managing Users](modules/accounting)
-- [Monitoring Your Cluster](placeholder)
-- [Benchmarking](placeholder)
+about
+modules/nfs
+modules/ww
+modules/chrony
+modules/slurm
+modules/supporting-software
+modules/hello-world
+modules/accounting
+```
+
 
 <!-- TODO: not rn 
 <!-- - [Module 11 - Parallel Storage (Optional)](module-11) -->
