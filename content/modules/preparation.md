@@ -55,12 +55,12 @@ Links are to recommended specific listing, quantitites are dependent on what is 
   - both users have the same password - `tuxcluster`
 - Your cluster will not have direct access to the internet. All packages you will need will be included on the pre-formated drive. feel free to read [this](modules/internet) if networking is desired after the fact.
 - Your cluster will be accessible using a priavte IP range of 10.0.0.0/24
-  - the head node runs a dhcp server which will automatically give client devices an ip in the range of `10.0.0.200-254`
+  - the head node runs a dhcp server which will automatically give client devices an ip in the range of `10.0.0.1100-254`
 - The nodes are assigned names and IP addresses as follows:
 
 | Hostname              | Address        |
 | --------------------- | -------------- |
-| boxocluster-node-1         | `10.0.0.2`     |
+| boxocluster-node-1         | `10.0.0.11`     |
 | pi-hpc-compute[01-40] | `10.0.0.11-50` |
 
 <!-- | pi-hpc-storage[01-40] | `10.0.0.51-90` | we're ignoring storage for now -->

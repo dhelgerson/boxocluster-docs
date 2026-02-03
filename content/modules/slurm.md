@@ -1,22 +1,15 @@
-page
-Scheduling Processes
-Build and install slurm packages.
-
----
-
 # Scheduling Processes
 
 ## Objective
 
 ### The Scheduler
 
-[Slurm Workload Manager](https://schedmd.com), or simply Slurm, allocates resources to users for a duration of time, provides a framework for starting, executing, and monitoring work, and manages a queue of pending jobs. Slurm is essentially the de-facto job scheduler for Linux and is used by most of the world's supercomputers, this guide will show you how to install it on your own cluster.
+The [Slurm Workload Manager](https://schedmd.com), or simply Slurm, allocates resources to users for a duration of time, provides a framework for starting, executing, and monitoring work, and manages a queue of pending jobs. Slurm is essentially the de-facto job scheduler for Linux and is used by most of the world's supercomputers, this guide will show you how to install it on your own cluster.
 
-## Install MariaDB on the Head Node
+## Head Node Installation
+### Install MariaDB
 
-<span class="small">resources:
-[mariadb](https://mariadb.org/documentation/)
-</span>
+Resources: [mariadb](https://mariadb.org/documentation/)
 
 While Slurm does work without MariaDB, it's fairly common to set it up to use MariaDB as it's useful for archiving account records and easily accessing these records.
 
@@ -26,7 +19,7 @@ rpm --install --verbose /apps/pkgs/mariadb-server/*.rpm
 
 Note: `dnf` may complain about failures the first time you run this - running it a second time will usually be successful.
 
-## Install Slurm on the Head Node
+### Install Slurm
 
 The head node will be responsible for accepting jobs from users, scheduling jobs on the cluster, and keeping a record of all jobs that ran. Packages installed are `slurm`, `slurmdbd`, and `slurmctld` and their dependencies.
 
@@ -34,7 +27,8 @@ The head node will be responsible for accepting jobs from users, scheduling jobs
 rpm --install --verbose /apps/pkgs/slurm-head/*.rpm
 ```
 
-## Setup Munge
+## Head Node Configuration
+### Configure Munge
 
 I gotta be honest. I pulled a sneaky on ya'. when you installed the slurm packages, I snuck munge in as well. Munge is a cryptographic authentication suite that uses a "key" and the current time. we need to create a key before slurm will start. thankfully the folks who make munge were kind enough to include a script. as root, run the following
 
@@ -42,20 +36,9 @@ I gotta be honest. I pulled a sneaky on ya'. when you installed the slurm packag
 create-munge-key
 ```
 
-## Setup Slurm
+### Configure Slurm
 
-<span class="small">resources:
-[slurmd](https://man.archlinux.org/man/slurmd.8.en),
-[Slurm control group](https://slurm.schedmd.com/cgroups.html)
-</span>
-
-Copy then extract the example template config file to `/etc/slurm` as root
-
-```bash
-cp /usr/share/doc/slurm-client/examples/slurm.conf.simple.gz /etc/slurm
-gzip -d /etc/slurm/slurm.conf.simple.gz
-mv /etc/slurm/slurm.conf.simple /etc/slurm/slurm.conf
-```
+Resources: [slurmd](https://man.archlinux.org/man/slurmd.8.en), [Slurm control group](https://slurm.schedmd.com/cgroups.html), [slurm.conf](https://slurm.schedmd.com/slurm.conf.html)
 
 Now edit the config to reflect your configuration (only *changed and added lines* are shown):
 
@@ -74,8 +57,8 @@ ClusterName=<your_cluster_name>
 JobAcctGatherType=jobacct_gather/linux
 
 ## Compute Nodes
-NodeName=pi-hpc-compute[01-04] CPUs=4 Sockets=4 CoresPerSocket=4 ThreadsPerCore=1 RealMemory=3700 State=UNKNOWN
-PartitionName=<partition_name> Nodes=pi-hpc-compute[01-04] Default=YES MaxTime=INFINITE State=UP
+NodeName=boxocluster-node-[1-4] CPUs=4 Sockets=1 CoresPerSocket=4 ThreadsPerCore=1 State=UNKNOWN
+PartitionName=<partition_name> Nodes=boxocluster-node-[1-4] Default=YES MaxTime=INFINITE State=UP
 ```
 
 We won't go into too much detail about what all the options mean just yet. The goal is to get the cluster working. You may chose what you want to call your cluster and what the default partition is called.
@@ -114,7 +97,8 @@ cp /etc/slurm/slurm.conf /shared/slurm.conf
 cp /etc/munge/munge.key /shared/munge.key
 ```
 
-## Install Slurm on the Compute Nodes
+## Compute Node Installation
+### Install Slurm
 
 Use the following command to enter the compute node container chroot with the right binds:
 
@@ -123,7 +107,7 @@ sudo su
 wwctl container exec --bind /shared:/shared base-rocky9-dracut /bin/bash
 ```
 
-Inside the warewulf contianer chroot, install the required packages.
+Inside the Warewulf contianer chroot, install the required packages.
 
 ```bash
 rpm --install --verbose --force /apps/pkgs/slurm-compute/*.rpm 
@@ -146,12 +130,12 @@ systemctl enable slurmd
 
 And finally, exit and rebuild the contianer with `exit`
 
-## Copy Munge Key to Nodes
+## Compute Node Configuration
+### Copy Munge Key to Nodes
 
-<span class="small">resources:
-[munge](https://linux.die.net/man/7/munge)
-</span>
-To provide the necessary authentication between thea head node and compute nodes, all nodes will need the same `munge.key`. Copy the files to the nodes and restart `munge` on all the nodes.
+Resources: [munge](https://linux.die.net/man/7/munge)
+
+To provide the necessary authentication between the head node and compute nodes, all nodes will need the same `munge.key`. Copy the files to the nodes and restart `munge` on all the nodes.
 
 ## Setup Slurm Database
 
@@ -216,7 +200,8 @@ And finally:
 exit;
 ```
 
-## Start Slurm on the Head Node
+## Start Slurm 
+### On the Head Node
 
 If everything is good, then the following should work.
 
@@ -233,11 +218,9 @@ Finally, setup accounting and create the cluster within `sacctmgr`. It may alrea
 sacctmgr -i add cluster <your cluster name>
 ```
 
-## Start Slurm on the Compute Nodes
+### On the Compute Nodes
 
-<span class="small">resources:
-[srun](https://slurm.schedmd.com/srun.html)
-</span>
+Resources: [srun](https://slurm.schedmd.com/srun.html)
 
 Reboot the nodes with the updated image. Slurm should start automatically. In the case that they need to be nanully restarted, run the following:
 
@@ -249,10 +232,10 @@ If all is good, the output of `sinfo -Nl` should look like the following:
 
 ```sql
 NODELIST          NODES PARTITION       STATE CPUS    S:C:T MEMORY TMP_DISK WEIGHT AVAIL_FE REASON              
-boxocluster-node-1      1   pi-hpc*        idle 4       1:4:1   3794        0      1   (null) none                
-boxocluster-node-2      1   pi-hpc*        idle 4       1:4:1   3794        0      1   (null) none                
-boxocluster-node-3      1   pi-hpc*        idle 4       1:4:1   3794        0      1   (null) none                
-boxocluster-node-4      1   pi-hpc*        idle 4       1:4:1   3794        0      1   (null) none 
+boxocluster-node-1      1   boxocluster*        idle 4       1:4:1   3794        0      1   (null) none                
+boxocluster-node-2      1   boxocluster*        idle 4       1:4:1   3794        0      1   (null) none                
+boxocluster-node-3      1   boxocluster*        idle 4       1:4:1   3794        0      1   (null) none                
+boxocluster-node-4      1   boxocluster*        idle 4       1:4:1   3794        0      1   (null) none 
 ```
 
 Finally, you should be able to run commands on the compute ndoes without using `pdsh`:
@@ -270,4 +253,6 @@ boxocluster-node-3
 boxocluster-node-4
 ```
 
-## [Next Module - Supporting Software](supporting-software)
+```{note}
+The Hostnames will likely appear out of order due to being run in parallel
+```

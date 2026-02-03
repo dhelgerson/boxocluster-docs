@@ -69,9 +69,7 @@ This should submit a job, and it should return "Hello World" 16 times with a dif
 
 ## Implementing Hello World with Python (if you installed it)
 
-<span class="small">resources:
-[mpirun](https://www.open-mpi.org/doc/current/man1/mpirun.1.php)
-</span>
+Resources: [mpirun](https://www.open-mpi.org/doc/current/man1/mpirun.1.php)
 
 Create a new directory under `/shared` like you did before, but use a different name to indicate that it's a python application. Create a new file `hello_mpi.py`:
 
@@ -107,5 +105,3 @@ As before, you should see "Hello World" return 16 times.
 ## MPI Examples
 
 MPI examples can be found on the [LLNL HPC Tutorials Page](https://hpc-tutorials.llnl.gov/mpi/exercise_1/). Experiment and run a few of these examples.
-
-## [Next Module - Managing Users](users)

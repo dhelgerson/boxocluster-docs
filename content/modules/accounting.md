@@ -1,30 +1,23 @@
-page
-Module 6 - User Management
-Configuring FreeIPA to manage users accross the picluster
+# User Management
 
----
+## Objective
 
-# Module 6 - User Management
+Resources: [FreeIPA Quickstart](https://www.freeipa.org/page/Quick_Start_Guide), [FreeIPA Docs Home](https://www.freeipa.org/page/Documentation.html)
 
-## Objective: Setting up LDAP to manage users
-
-<span class="small">resources:
-[FreeIPA Quickstart](https://www.freeipa.org/page/Quick_Start_Guide)
-[FreeIPA Docs Home](https://www.freeipa.org/page/Documentation.html)
-</span>
-
-Lightweight Directory Access Protocol (LDAP) is the defacto standard for enterprises to manage users across devices and platforms. 
+**Setting up LDAP to manage users**
+Lightweight Directory Access Protocol (LDAP) is the de-facto standard for enterprises to manage users across devices and platforms. 
 In our cluster, we want to be able to add, delete, and modify users and have those changes be reflected across all nodes. 
 Since the picluster is an emulation of best practice in HPC, we'll be using the industry standard: FreeIPA.
 
-## Concepts
+### Concepts
 
 LDAP requires fully qualified domain names (FQDN) for each node. 
 These take the form of `hostname.subdomain(optional).domain`. 
 The FQDN's for each supported node in the picluster have been populated in `/etc/hosts/` on the head node. 
-Since the picluster is only using `/etc/hosts` and not expecting inbound traffic, we'll use `.pi.local`to denote it's only local.
+Since the picluster is only using `/etc/hosts` and not expecting inbound traffic, we'll use `.boxocluster.local`to denote it's only local.
 
-## Installing the Server
+## Installation
+### Install the Server
 
 Installation is very simple: the head node needs the `ipa-server` package and the nodes need the `ipa-client` package.
 
@@ -34,7 +27,7 @@ As root, install the server package on the head node:
 rpm --install --verbose /apps/pkgs/ipa-server/*.rpm
 ```
 
-## Configuring DNSMASQ
+### Configure DNSMasq
 
 Since we're working on a local network without internet, we'll need to setup DNS accordingly, replace the contents of `/etc/dnsmasq.conf` with the following:
 
@@ -53,7 +46,7 @@ Then enable it now with:
 systemctl enable --now dnsmasq
 ```
 
-## Configuring the Server
+### Configure the Server
 
 Next, we need to configure LDAP. 
 In the past, this has required quite a bit of knowledge, forethought, and understanding. 
@@ -66,7 +59,7 @@ As root, run the following:
 ipa-server-install --mkhomedir
 ```
 
-**Notes:**
+```{note}
 - This script will ask a few questions. 
 We'll be using all defaults here so whenever a question has a bracketed answer, hit enter.
 - The password is up to you but I recommend using the one we've been using: `tuxcluster`. 
@@ -74,8 +67,10 @@ You'll need to enter this 4 times.
 - At the end, the script will prompt you to confirm the setup before continuing. 
 The default is [no] so you must type yes.
 - The server install process can take some time.
+```
 
-## Adding a User
+## Usage
+### Adding a User
 
 Once the server is up and running, we'll need to add users.
 
@@ -89,10 +84,10 @@ ipa passwd <your username>
 
 The next time you logon as the user, you'll be prompted to set your preferred password.
 
-## Signing into the WebGUI (Optional)
+### Signing into the WebGUI (Optional)
 
 Along with the CLI, FreeIPA provides an intuitive Web-based Graphical User Interface (WebGUI) to manage the system.
-The WebGUI is available at [http://boxocluster-node-1.pi.local](http://boxocluster-node-1.pi.local), however, since the dns server is local to the pi's you'll have to do a little configuration to access it.
+The WebGUI is available at [http://boxocluster-node-1.boxocluster.local](http://boxocluster-node-1.boxocluster.local), however, since the dns server is local to the pi's you'll have to do a little configuration to access it.
 
 According to whether your client is running, Windows, MacOS, or Linux, you'll have to follow different instructions.
 
@@ -100,7 +95,7 @@ According to whether your client is running, Windows, MacOS, or Linux, you'll ha
 - Add the following line to `/etc/hosts`:
 
 ```bash
-10.0.0.11 boxocluster-node-1.pi.local
+10.0.0.11 boxocluster-node-1.boxocluster.local
 ```
 
 **For Windows:**
@@ -113,13 +108,11 @@ Ensure “All Files” is selected as the file type, as the hosts file does not 
 - Add the following entry to the end
 
 ```bash
-10.0.0.11 boxocluster-node-1.pi.local
+10.0.0.11 boxocluster-node-1.boxocluster.local
 ```
 
 - Save the File: After making changes, click File > Save to save the file. You may need to save it again if Notepad warns that the file has been modified by another program.
 
-Once completed, use a browser to navigate to [boxocluster-node-1.pi.local](boxocluster-node-1.pi.local). 
+Once completed, use a browser to navigate to [boxocluster-node-1.boxocluster.local](boxocluster-node-1.boxocluster.local). 
 Login with the Username:password of admin:tuxcluster. 
 Instructions can be read from [their docs](https://www.freeipa.org/page/Documentation.html)
-
-## Module 7 - The Scheduler

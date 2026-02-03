@@ -6,8 +6,8 @@ Done:
 
 - headnode.sh
   - sets up networking, grabs packages, etc.
-- warewulf.sh
-  - builds and installs warewulf as well as dependencies
+- Warewulf.sh
+  - builds and installs Warewulf as well as dependencies
 - ww-nodes.sh
   - builds compute node container
   - imports into ww
@@ -42,10 +42,10 @@ Postponed:
 Done:
 
 - instructors (almost entire rewrite updating hardware, install process, and references)
-- nfs shares (warewulf changes)
+- nfs shares (Warewulf changes)
 - os installation (bootload flashing and head-node image)
-- timeserver (warewulf)
-- warewulf (remove installation)
+- timeserver (Warewulf)
+- Warewulf (remove installation)
 - slurm (ww node install)
 - supporting software (update to build openmpi)
 

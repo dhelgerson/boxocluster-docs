@@ -8,7 +8,7 @@
 
 project = 'Boxocluster'
 copyright = '2026, SIGHPC'
-author = 'SIGHPC'
+author = 'SigHPC'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
