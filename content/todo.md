@@ -36,7 +36,6 @@ Research needed:
 Postponed:
 
 - spack ???
-- accounting (tess?)
 - benchmarking (HPL, LLM?)
 
 Done:
