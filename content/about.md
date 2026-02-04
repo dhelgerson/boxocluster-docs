@@ -9,5 +9,5 @@ Website content is licensed under CC BY-NC-SA 4.0. Code written by our contribut
 ## Contributions
 
 - **[John Bradley](mailto:jbradley@hpc.msstate.edu)** - Project Manager, Creator
-- **[Drew Helgerson](drew.helgerson@msstate.edu)** - Content, Code
+- **[Drew Helgerson](mailto:drew.helgerson@msstate.edu)** - Content, Code
 - **Matt Brockhaus** - Curriculum Guidance

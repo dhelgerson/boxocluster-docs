@@ -35,7 +35,7 @@ myst_enable_extensions = [
 html_theme = 'shibuya'
 
 html_static_path = ['_static']
-html_favicon = "_static/favicon.ico"
+html_favicon = "_static/favicon.png"
 html_theme_options = {
 	"github_url": "https://github.com/userjack6880/picluster/tree/boxocluster",
 	"discord_url": "https://discord.gg/H4AEpeg8KU",
