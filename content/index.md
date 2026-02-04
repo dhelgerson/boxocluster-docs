@@ -29,6 +29,12 @@ modules/hello-world
 modules/accounting
 ```
 
+```{toctree}
+:maxdepth: 1
+
+adv/index
+```
+
 <!-- TODO: not rn 
 <!-- - [Module 11 - Parallel Storage (Optional)](module-11) -->
 <!-- - Module 14 - Challenges                        also john -->
