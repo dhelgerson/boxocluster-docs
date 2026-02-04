@@ -31,7 +31,6 @@ modules/accounting
 
 ```{toctree}
 :maxdepth: 1
-:caption: Index:
 
 adv/index
 ```
