@@ -8,7 +8,7 @@ Understand how Warewulf(ww) is setup on the Head Node and how it works.
 
 Resources: [Linux Boot Process](https://en.wikipedia.org/wiki/Booting_process_of_Linux), [WareWulf Docs](https://warewulf.org/docs/v4.5.x/), [PXE](https://en.wikipedia.org/wiki/Preboot_Execution_Environment), [iPXE](https://ipxe.org/docs)
 
-## What is WarewWulf?
+## What is WareWulf?
 
 Warewulf is a purpose-built stateless booting system built for large-scale HPC's. It's what the [HPC2](https://hpc.msstate.edu) uses to boot and maintain the state of thousands(literally) of cluster nodes. It does this by maintaining a "Golden Image" of a compute node as desired and sending it to each node when it boots. This means that every time a node reboots. it's entirely wiped and returned to the desired state. There are some advantages and some drawbacks to this approach. Careful consideration must be taken when building these images so that they will consistently work on all nodes.
 
@@ -35,12 +35,12 @@ Chroot'ing into the container to make changes to the compute nodes interactively
 - **Note:** the exit status of the last command dictates whether Warewulf saves changes made in the chroot. this is indicated in the prompt by either a "write" or a "discard". exit the container with either Ctrl+D or `exit`
 
 ```bash
-wwctl container exec base-rocky9-dracut /bin/bash
+wwctl container exec base-rocky9 /bin/bash
 ```
 
 As above but making the host's `/shared` and `/apps` 
 ```bash
-wwctl container exec --bind /shared:/shared base-rocky9-dracut /bin/bash
+wwctl container exec --bind /shared:/shared base-rocky9 /bin/bash
 ```
 
 Copying Contianers, useful when testing changes

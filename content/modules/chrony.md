@@ -85,7 +85,7 @@ Resources: [pdsh](https://linux.die.net/man/1/pdsh), [grep](https://linux.die.ne
 Enter the Node container chroot (you'll need to be root):
 
 ```bash
-wwctl container exec base-rocky9-dracut /bin/bash
+wwctl container exec base-rocky9 /bin/bash
 ```
 
 **Note:** while in the Warewulf container chroot, the exit status of the last command deterines whether the changes are commited. This can be viewed in the prompt, either "write" or "exit"
