@@ -4,13 +4,27 @@ When running jobs on HPC clusters using Slurm, understanding the difference betw
 ---
 
 ## Nomenclature
-- **Process**: An independent instance of a program with its own memory space. In HPC, a process typically corresponds to one Slurm task.  
-- **Thread**: A lightweight execution unit within a process. Threads share the process’s memory space and are used for multi-threaded parallelism.  
-- **Rank**: In MPI programs, a rank is the identifier of a specific process in a communicator. For example, `rank 0` often represents the first, commonly the “master” process.  
-- **Task**: Slurm terminology for a unit of work; usually maps to a process.  
-- **Node**: A single physical or virtual machine in a cluster. A node can run multiple tasks or threads.  
-- **Core**: A hardware CPU core; threads and processes are scheduled on cores.  
-- **Hybrid Parallelism**: Using both multiple processes (MPI ranks) and multiple threads per process (OpenMP or threading libraries) simultaneously.
+
+**Process**
+: An independent instance of a program with its own memory space. In HPC, a process typically corresponds to one Slurm task.  
+
+**Thread**
+: A lightweight execution unit within a process. Threads share the process’s memory space and are used for multi-threaded parallelism.  
+
+**Rank**
+: In MPI programs, a rank is the identifier of a specific process in a communicator. For example, `rank 0` often represents the first, commonly the “master” process.  
+
+**Task**
+: Slurm terminology for a unit of work; usually maps to a process.  
+
+**Node**
+: A single physical or virtual machine in a cluster. A node can run multiple tasks or threads.  
+
+**Core**
+: A hardware CPU core; threads and processes are scheduled on cores.  
+
+**Hybrid Parallelism**
+: Using both multiple processes (MPI ranks) and multiple threads per process (OpenMP or threading libraries) simultaneously.
 
 ---
 
