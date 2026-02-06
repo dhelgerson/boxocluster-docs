@@ -33,6 +33,12 @@ apptainer run --containall \
   docker://ghcr.io/dhelgerson/boxocluster:main &
 ```
 
+```{note}
+There is currently a known bug with apptainer that causes multicast connections to be reset. 
+This prevents the compute nodes from booting.
+We are currently investigating a solution, but for now, just run all head-node commands as it makes up the majority.
+```
+
 ## Windows
 
 Docker Desktop is recommended for Windows.
