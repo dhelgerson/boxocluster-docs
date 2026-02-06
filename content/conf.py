@@ -44,3 +44,27 @@ html_theme_options = {
     "dark_logo": "_static/pngs/logo_h_white.png",
 }
 html_css_files = ['custom.css']
+
+# Set this to your published HTML site root.
+html_baseurl = "https://boxocluster.com/"  # trailing slash is fine
+
+def add_online_link_banner(app, docname, source):
+    """
+    Prepend a short banner to each document with a deep link to the published HTML page.
+    This affects all builders, including the 'text' builder.
+    """
+    base = (app.config.html_baseurl or "").rstrip("/") + "/"
+    url = f"{base}{docname}.html"
+
+    if app.builder.name == "text":
+        banner = (
+            "\n\n"
+            "Note:\n\n"
+            f"    Online version of this page: {url}\n\n"
+        )
+        source[0] = banner + source[0]
+
+    return
+
+def setup(app):
+    app.connect("source-read", add_online_link_banner)
