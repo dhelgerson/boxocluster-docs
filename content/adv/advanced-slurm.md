@@ -50,3 +50,15 @@ sbatch --array=0-99%10 myscript.sh
 ```
 
 - Only 10 tasks run simultaneously; the rest wait in the queue.
+
+## Dumping a Run-script
+One of Slurm's best features is accounting. A really handy feature is the ability to dump previous jobs' run-scripts.
+
+First, run `sacct -X` to get the job ID; you may need to add `-S YEAR-MM-DD` to include older jobs. 
+
+Then, dump the run-script.
+```bash
+sacct --batch-script --jobs <jobid>
+```
+
+This will print your subscript exactly as it was submitted to the scheduler, very helpful for when a particular run did well but you don't remember which parameters it used.
