@@ -2,30 +2,34 @@
 
 Running Boxocluster is as simple as grabbing the head node's disk image and the docker-compose file and running the stack.
 
-## Linux
+## Get the VM image
+```bash
+curl -LO https://boxocluster.com/boxocluster-node-1.qcow2
+```
+
+## Run the Container
+### Linux
 
 Linux has a host of container run-times, here I'll show one that requires root and one that does not
 
-### With Docker
+#### With Docker
 
 Docker is native on linux. Ensure you have docker-compose v2 installed, then do the following:
 
 ```bash
 git clone https://github.com/dhelgerson/boxocluster.git
 cd boxocluster
-curl -LO https://boxocluster.com/boxocluster-node-1.qcow2
 docker compose up -d
 docker compose logs -f &
 ```
 
 - follow the instructions to connect to your new virtual cluster
 
-### With Apptainer
+#### With Apptainer
 
 If you don't have sudo, you're not out of luck. apptainer runs in userspace and can also be used. Run the following and follow the instructions.
 
 ```bash
-curl -LO https://boxocluster.com/boxocluster-node-1.qcow2
 apptainer run --containall \
   --cwd $PWD \
   --bind /dev/kvm:/dev/kvm \
@@ -39,7 +43,7 @@ This prevents the compute nodes from booting.
 We are currently investigating a solution, but for now, just run all head-node commands as it makes up the majority.
 ```
 
-## Windows
+### Windows
 
 Docker Desktop is recommended for Windows.
 
@@ -70,7 +74,7 @@ Docker Desktop is recommended for Windows.
 
 5. From here, you can follow the steps for [Docker](#with-docker).
 
-## macOS
+### macOS
 
 Docker Desktop is recommended for macOS.
 
@@ -100,3 +104,23 @@ Docker Desktop is recommended for macOS.
    * You should see Docker and Docker Compose versions printed.
 
 5. From here, you can follow the steps for [Docker](#with-docker)
+
+## Log into the head-node
+Once the container starts, the head node will boot. Once it is done booting, you can ssh into it with:
+```
+ssh -p 2222 admin@localhost
+```
+
+After the head node boots, allow the compute nodes some time to boot. their status can be viewed by running `tail -f computeX.out` where x is the node number.
+
+Once the Nodes are done booting, it's recommended to control them in parallel with pdsh.
+```{warning}
+There's currently a bug that 'causes the compute nodes to bind pubkeys to the first user that ssh's to them. This will be fixed in the future. Currently, the workaround is to issue the following command before doing anything else to ensure pubkeys bind to root first.
+```
+
+```bash
+sudo su -
+pdsh -a whoami
+```
+
+If all nodes return with 'root' (you may get some messages about accepting the hostkeys), then you're good to go!
