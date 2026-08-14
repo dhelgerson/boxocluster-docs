@@ -7,9 +7,13 @@ Welcome to Boxocluster, an tool for instructors and students to explore the worl
 
 In this digital era, the demand for scalable and efficient computing solutions continues to rise. Understanding how to harness the power of cluster computing is becoming increasingly essential across various fields, from data science and artificial intelligence to scientific research and beyond.
 
+Users should see [Getting Started](getting-started.md) next or jump to any topic on the left.
+
+Once a functioning cluster is achieved, users may choose to continue learning about parallel programming. First, start with [Theory](parallel-programming/theory.md).
+
 ```{toctree}
 :maxdepth: 1
-:caption: Index:
+:hidden:
 
 about
 getting-started
@@ -18,7 +22,8 @@ getting-started
 ```{toctree}
 :maxdepth: 1
 :numbered: 1
-:caption: Modules:
+:caption: Modules
+:hidden:
 :glob:
 
 modules/nfs
@@ -31,10 +36,28 @@ modules/accounting
 ```
 
 ```{toctree}
+:maxdepth: 2
+:caption: Parallel Programming
+:hidden:
+
+parallel-programming/theory.md
+parallel-programming/hardware.md
+parallel-programming/git-basics.md
+parallel-programming/autovec.md
+parallel-programming/openmp.md
+parallel-programming/stdpar.md
+parallel-programming/mpi.md
+parallel-programming/profiling.md
+parallel-programming/valgrind.md
+```
+
+<!--
+```{toctree}
 :maxdepth: 1
 
 adv/index
 ```
+-->
 
 <!-- TODO: not rn 
 <!-- - [Module 11 - Parallel Storage (Optional)](module-11) -->

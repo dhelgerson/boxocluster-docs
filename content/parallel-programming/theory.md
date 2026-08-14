@@ -1,0 +1,249 @@
+# Parallel Computing Theory
+
+```{rubric} Learning Objectives
+:heading-level: 3
+```
+
+- Explain why single-thread CPU performance plateaued around 2005
+- Apply Amdahl's Law to predict strong-scaling limits
+- Apply Gustafson-Barsis's Law to predict weak-scaling behavior
+- Classify hardware and algorithms using Flynn's taxonomy
+- Identify when a GPU is and is not the right tool for a problem
+- Explain the performance portability problem and why abstraction layers exist
+
+---
+
+## Why Parallelism Matters
+
+### The End of "Free" Performance Gains
+
+For roughly three decades, programmers could rely on Moore's Law to deliver faster hardware without changing their code. Clock frequencies doubled roughly every two years; a program that ran in 10 seconds today ran in 5 seconds on the next generation CPU.
+
+That era ended around 2005. Clock frequency, single-thread performance, and power consumption all plateaued simultaneously. The reasons are coupled:
+
+- **Power wall**: Power dissipation scales as $P \propto C V^2 f$, where $C$ is capacitance, $V$ is supply voltage, and $f$ is clock frequency. Shrinking transistors lowers $C$ but not $V$ proportionally; attempting to raise $f$ sends power density to levels that cannot be cooled in commodity packaging.
+- **ILP wall**: Instruction-level parallelism (out-of-order execution, branch prediction, speculative execution) has diminishing returns; modern CPUs already exploit most of the available ILP in typical code.
+- **Memory wall**: Memory latency has not kept pace with compute throughput, so a faster ALU often just stalls on data.
+
+What *has* continued to grow: core counts. Modern server CPUs have 32–96 or more cores. Modern GPUs have thousands of simple compute units. The hardware is parallel; serial code cannot use it.
+
+### The Cost of Writing Serial Code
+
+Consider a modern single-socket 16-core CPU with 512-bit AVX vector units processing 64-bit doubles:
+
+$$\text{Parallelism} = \underbrace{16}_{\text{cores}} \times \underbrace{\frac{512\text{ bits}}{64\text{ bits}}}_{\text{vector width}} = 128\text{-way}$$
+
+A serial scalar program exploits exactly 1 of those 128 lanes, achieving roughly $1/128 \approx 0.8\%$ of available floating-point throughput — before even considering that multiple sockets or GPU accelerators may be available.
+
+### Energy Cost of Under-Utilization
+
+Hardware efficiency translates directly to energy bills. As a concrete example:
+
+| Configuration | Hardware | Count | TDP | Runtime | Energy |
+|---|---|---|---|---|---|
+| CPU-only | Intel Xeon Gold 6148 (20-core) | 20 sockets | 150 W | 24 h | 72 kWh |
+| GPU-accelerated | NVIDIA Tesla V100 | 3 GPUs | 300 W | 24 h | 21 kWh |
+
+If the GPU configuration solves the same problem in the same wall-clock time using half the energy, the choice is clear — provided the code is structured to exploit GPU parallelism effectively.
+
+
+```{note}
+These numbers assume the GPU run achieves the same time-to-solution as the CPU cluster. Achieving that requires both algorithmic suitability and careful implementation. The rest of this tutorial is about acquiring those skills.
+```
+
+
+---
+
+## Amdahl's Law: Strong Scaling
+
+### The Formula
+
+Amdahl's Law describes *strong scaling*: what happens when you add processors to solve a **fixed-size** problem. Let $S$ be the serial fraction of the work, $P = 1 - S$ the parallelizable fraction, and $N$ the number of processors. The maximum achievable speedup is:
+
+$$\text{SpeedUp}(N) = \frac{1}{S + \dfrac{P}{N}}$$
+
+### Implications
+
+The serial fraction $S$ is an absolute ceiling on scalability. As $N \to \infty$:
+
+$$\lim_{N \to \infty} \text{SpeedUp}(N) = \frac{1}{S}$$
+
+| Serial fraction $S$ | Max speedup (any $N$) |
+|---|---|
+| 50% | 2× |
+| 10% | 10× |
+| 5% | 20× |
+| 1% | 100× |
+
+A program with 10% serial code can never exceed 10× speedup, no matter how many processors you throw at it. Parallelizing 90% of the code leaves you one decimal place of headroom.
+
+
+```{warning}
+Amdahl's Law assumes the serial fraction $S$ is constant and cannot be parallelized. In practice, synchronization, I/O, initialization, and output all contribute to $S$. These costs sometimes *grow* with $N$ (due to communication overhead), making real scaling worse than Amdahl predicts.
+```
+
+
+### Strong-Scaling Curve
+
+The speedup curve is concave and saturates rapidly:
+
+| $N$    | $S$   | $\text{Formula}$       | $\text{Speedup}$ |
+| ------ | ----- | ---------------------- | ---------------- |
+| $10$   | $0.1$ | $1/(0.1 + 0.9/10) =$   | $5.26\times$     |
+| $100$  | $0.1$ | $1/(0.1 + 0.9/100) =$  | $9.17\times$     |
+| $1000$ | $0.1$ | $1/(0.1 + 0.9/1000) =$ | $9.91\times$     |
+
+The marginal return of adding processors falls off quickly. Doubling from 100 to 200 processors adds less than 0.5× speedup when $S = 0.1$.
+
+---
+
+## Gustafson-Barsis's Law: Weak Scaling
+
+### The Insight
+
+Amdahl's Law holds the problem size fixed. Gustafson and Barsis observed in 1988 that this is often the wrong model: in practice, scientists *choose problem size based on available hardware*. With more processors, you run a bigger problem in the same wall time — not the same problem faster.
+
+Under weak scaling, the total work grows with $N$ while wall time remains constant. If the serial work $s$ is fixed (does not grow with $N$), the scaled speedup is:
+
+$$\text{SpeedUp}(N) = N - S(N - 1)$$
+
+where $S$ is the serial fraction measured *on a single processor*. Rewritten: $S \cdot 1 + P \cdot N$ units of work complete in the same time as $1$ unit on a single processor — a speedup of $S + P \cdot N = N - S(N-1)$.
+
+### Amdahl vs Gustafson-Barsis
+
+| | Amdahl (Strong Scaling) | Gustafson-Barsis (Weak Scaling) |
+|---|---|---|
+| Problem size | Fixed | Grows with $N$ |
+| What's measured | Speedup for same problem | Work done in same time |
+| Serial bottleneck | Hard ceiling $1/S$ | Scales as $N - S(N-1)$ |
+| Practical relevance | Memory-constrained runs | Production HPC simulations |
+
+
+```{tip}
+When reporting scaling results, always state whether you ran a strong or weak scaling study. The two tell fundamentally different stories about your code's parallel efficiency.
+```
+
+
+---
+
+## Flynn's Taxonomy
+
+Michael Flynn's 1972 classification scheme categorizes computer architectures along two axes: instruction stream and data stream, each either Single or Multiple.
+
+| | Single Data | Multiple Data |
+|---|---|---|
+| **Single Instruction** | SISD | SIMD |
+| **Multiple Instruction** | MISD | MIMD |
+
+### SISD — Single Instruction, Single Data
+
+A scalar serial processor. One instruction operates on one data element at a time. A for-loop executing one iteration per cycle on a single core is SISD. This is the model most programmers have in their heads.
+
+### SIMD — Single Instruction, Multiple Data
+
+One instruction operates on multiple data elements simultaneously using vector registers. Modern CPUs expose this via AVX/AVX-512 intrinsics or auto-vectorization. GPU warps (groups of 32 CUDA threads executing the same instruction) are also SIMD at the warp level.
+
+SIMD is the mechanism behind statements like "256-bit vector units process 4 doubles at once." The hardware broadcasts a single instruction to multiple ALUs operating on adjacent memory.
+
+### MISD — Multiple Instruction, Single Data
+
+Uncommon in practice. Fault-tolerant systems that run the same data through independent pipelines to cross-check results (e.g., flight-control, radiation-hardened computers ) fit this category.
+
+### MIMD — Multiple Instruction, Multiple Data
+
+Each processor runs its own instruction stream on its own data. This is the model for multi-core CPUs and MPI-distributed clusters. OpenMP threads are MIMD; MPI ranks are MIMD. Real workloads often combine MIMD at the node level with SIMD at the core level.
+
+
+```{note}
+Modern HPC codes often exploit all four levels of the hierarchy simultaneously: SIMD vector units inside MIMD OpenMP threads inside MIMD MPI ranks. Each level requires a different programming model and a different set of correctness guarantees.
+```
+
+
+---
+
+## CPU vs GPU Architecture
+
+### Design Philosophy
+
+CPUs and GPUs reflect opposite design choices about the compute-latency tradeoff.
+
+| Feature | CPU | GPU                                      |
+|---|---|---|
+| Core count | 8–96 high-complexity cores | Thousands of simple shader/compute cores |
+| Clock speed | 3–5 GHz | 1–2 GHz                                  |
+| Cache depth | L1 → L2 → L3 → DRAM | L1 → L2 → HBM/GDDR                       |
+| Cache size (L3) | 16–256 MiB | 32–40 MiB (shared L2)                    |
+| Branch prediction | Deep, speculative | Minimal (branch divergence is expensive) |
+| Memory bandwidth | 50–200 GB/s (DDR5) | 900–3000 GB/s (HBM3)                     |
+| Design target | Low latency, diverse workloads | High throughput, regular workloads       |
+
+A CPU minimizes latency for any single thread using deep caches and sophisticated out-of-order execution. A GPU maximizes aggregate throughput by hiding latency: when one warp stalls on a memory load, the hardware instantly switches to another warp. This only works when there are thousands of independent warps in flight.
+
+### When a GPU Is a Good Fit
+
+A workload maps well to a GPU when:
+
+- **Loops are order-independent**: any iteration can execute in any order without affecting correctness (no loop-carried dependencies).
+- **Threads are independent and thread-safe**: no shared mutable state that requires synchronization across threads.
+- **Memory access is contiguous**: threads in a warp access adjacent addresses (coalesced access).
+- **Thread divergence is low**: all threads in a warp follow the same control flow path. Divergent branches serialize within the warp.
+- **Arithmetic intensity is moderate to high**: enough floating-point work per byte loaded to keep the ALUs busy while data is in flight. Pure memory-copy kernels saturate bandwidth but do not stress compute.
+
+### When a GPU Is a Poor Fit
+
+| Pattern | Problem |
+|---|---|
+| Tree traversal / oct-trees / kd-trees | Irregular memory access; poor coalescing |
+| Dynamic memory allocation in kernels | `malloc`/`new` on device is expensive and serializing |
+| Monte Carlo with divergent paths | Thread divergence serializes warp execution |
+| Globally implicit solvers (multi-GPU) | All-to-all communication across GPUs is slow |
+| Small datasets | PCIe transfer overhead dominates compute time |
+
+
+```{warning}
+If the per-thread memory access pattern is random, then each thread could potentially request data from many different memory locations. This will often generate multiple non-coalesced memory accesses per warp, wasting [cache-line reads](hardware.md#cache-line-mechanics) and forcing the entire warp to block until all reads are completed.
+```
+
+
+
+```{warning}
+Thread divergence occurs when threads within the same warp take different flow control paths in the kernel — usually due to a logical switch statement such as `if` / `else`. Since all of the threads in a warp share the same instruction cache, threads will be split into multiple groups based on which branch of the logical switch they satisfy. Each group then runs the code in its branch while the other remain idle.
+```
+
+
+
+```{warning}
+Moving data to and from the GPU over PCIe costs roughly 10–15 GB/s. If your kernel takes less time than the data transfer, you have made the code slower, not faster. Profile the transfer cost before porting to GPU.
+```
+
+
+See [GPU Usage](../gpu-usage/index.md) for how to request GPUs on ARC clusters.
+
+---
+
+## The Performance Portability Problem
+
+Writing GPU code in CUDA produces code that runs only on NVIDIA hardware. HIP targets AMD GPUs. SYCL and oneAPI target Intel GPUs and CPUs. OpenMP offload supports multiple vendors but with varying compiler maturity.
+
+This creates a maintenance problem: to support multiple hardware targets, teams historically maintained multiple codebases. Bugs fixed in one port were re-introduced in another.
+
+**Abstraction layers** solve this by providing a single source that compiles to different backends:
+
+| Framework | Backends supported |
+|---|---|
+| Kokkos | CUDA, HIP, SYCL, OpenMP, serial |
+| RAJA | CUDA, HIP, OpenMP, sequential |
+| OpenMP (target offload) | NVIDIA, AMD, Intel (compiler-dependent) |
+| SYCL / DPC++ | Intel, NVIDIA (via Codeplay), AMD |
+
+The tradeoff: abstraction layers impose a compilation and conceptual overhead. Code written to Kokkos idioms is portable but requires the Kokkos runtime to be installed and the developer to understand Kokkos's execution and memory space model. See the topic on [Kokkos](kokkos.md) for details.
+
+---
+
+## References
+
+- [Kokkos](https://github.com/kokkos/kokkos) — performance-portable C++ programming model (covered in [Module 8](kokkos.md)).
+- [RAJA](https://github.com/LLNL/RAJA) — LLNL's portability abstraction layer.
+- [SYCL](https://www.khronos.org/sycl/) — Khronos open standard for single-source heterogeneous C++.
+- [HIP](https://rocm.docs.amd.com/projects/HIP/en/latest/) — AMD's CUDA-like API for portable GPU kernels.
+- [OpenMP](https://www.openmp.org/specifications/) — directive-based parallelism for CPU and, via offload, GPU.
