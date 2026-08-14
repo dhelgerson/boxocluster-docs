@@ -1,5 +1,8 @@
 linkify-it-py
 myst-parser
-shibuya
-Sphinx
+shibuya==2026.1.9
+Sphinx==9.1.0
 sphinx-copybutton
+sphinx-design
+sphinx-new-tab-link
+sphinx-iconify

@@ -10,12 +10,17 @@ project = 'Boxocluster'
 copyright = '2026, SIGHPC'
 author = 'SigHPC'
 
+html_title = project
+
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
 extensions = [
     'myst_parser',
     'sphinx_copybutton',
+    'sphinx_design',
+    'sphinx_new_tab_link',
+    'sphinx_iconify',
 ]
 
 templates_path = ['_templates']
@@ -26,22 +31,30 @@ myst_enable_extensions = [
     'deflist',
     'attrs_inline',
     'linkify',
+    'dollarmath',
 ]
+
+myst_dmath_double_inline = True
+
+# Register sphinx_design directives with MyST Parser
+# This allows MyST to parse {tab-set}, {tab-item}, etc. syntax
+myst_url_schemes = ('http', 'https', 'mailto', 'ftp')
 
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
 html_theme = 'shibuya'
-
+html_theme_options = {
+    "default_mode": "light",  # Force light mode on first load
+}
 html_static_path = ['_static']
-html_favicon = "_static/favicon.png"
+html_favicon = "_static/favicon-msu.svg"
+html_logo = "_static/logos/HORIZONTAL_WEB_white.svg"
 html_theme_options = {
 	"github_url": "https://github.com/userjack6880/picluster/tree/boxocluster",
 	"discord_url": "https://discord.gg/H4AEpeg8KU",
-    "accent_color": "pink",
-    "light_logo": "_static/pngs/logo_h_maroon.png",
-    "dark_logo": "_static/pngs/logo_h_white.png",
+    "accent_color": "gray",
 }
 html_css_files = ['custom.css']
 
