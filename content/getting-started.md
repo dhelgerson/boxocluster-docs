@@ -3,8 +3,11 @@
 Running Boxocluster is as simple as grabbing the head node's disk image and the docker-compose file and running the stack.
 
 ## Get the VM image
+
+Due to github release artifact size limits, the image has been split. The following command rejoins and decompresses the files to it's ready to use.
+
 ```bash
-curl -LO https://boxocluster.com/boxocluster-node-1.qcow2
+cat <(curl -L https://github.com/dhelgerson/boxocluster-docs/releases/download/v0.1/boxocluster-node-1.qcow.xz.00) <(curl -L https://github.com/dhelgerson/boxocluster-docs/releases/download/v0.1/boxocluster-node-1.qcow.xz.01) | xz -d > boxocluster-node-1.qcow2
 ```
 
 ## Run the Container
