@@ -1,4 +1,4 @@
-# Profiling & Performance Analysis
+# Profiling & Analysis
 
 ```{rubric} Learning Objectives
 :heading-level: 3

@@ -1,9 +1,3 @@
-page
-Hello World(s)!
-Hello-ing all over the cluster.
-
----
-
 # Hello World(s)!
 
 ## Objective: Implement the basic "hello world" program using C and Python

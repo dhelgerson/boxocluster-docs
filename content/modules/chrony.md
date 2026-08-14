@@ -1,9 +1,3 @@
-page
-Keeping Time
-Set up chrony to keep time.
-
----
-
 # Keeping Time
 
 ## Objective: Setup chronyd to keep time
