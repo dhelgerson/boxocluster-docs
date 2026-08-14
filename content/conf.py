@@ -7,8 +7,8 @@
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 project = 'Boxocluster'
-copyright = '2026, SIGHPC'
-author = 'SigHPC'
+copyright = '2026, ARC'
+author = 'Msstate Advanced Research Collaboratory'
 
 html_title = project
 
@@ -52,7 +52,7 @@ html_static_path = ['_static']
 html_favicon = "_static/favicon-msu.svg"
 html_logo = "_static/logos/HORIZONTAL_WEB_white.svg"
 html_theme_options = {
-	"github_url": "https://github.com/userjack6880/picluster/tree/boxocluster",
+	"github_url": "https://github.com/dhelgerson/boxocluster",
 	"discord_url": "https://discord.gg/H4AEpeg8KU",
     "accent_color": "gray",
 }
@@ -60,6 +60,14 @@ html_css_files = ['custom.css']
 
 # Set this to your published HTML site root.
 html_baseurl = "https://boxocluster.com/"  # trailing slash is fine
+
+html_context = {
+    "source_type": "github",
+    "source_user": "dhelgerson",
+    "source_repo": "boxocluster-docs",
+    "source_version": "main",  # Optional
+    "source_docs_path": "/content/",  # Optional
+}
 
 def add_online_link_banner(app, docname, source):
     """
