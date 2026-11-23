@@ -1,7 +1,7 @@
 # Box O' Cluster
 ## Introduction
 
-<span class="small">Last Update 3 February 2026</span>
+<span class="small">Last Update 23 November 2026</span>
 
 Welcome to Boxocluster, an tool for instructors and students to explore the world of distributed computing with a hands-on guided experience through the process of building, configuring, and managing a virtual cluster computer. While the hardware may differ from the systems found on the [Top500](https://top500.org), the fundamentals remain the same. By mastering the principles underlying cluster computing, students will be equipped with valuable skills applicable to both small-scale projects and large-scale infrastructures. These resources can be used as a jumping-off point to demonstrate additional concepts of cluster computing as you see fit.
 
@@ -9,7 +9,7 @@ In this digital era, the demand for scalable and efficient computing solutions c
 
 Users should see [Getting Started](getting-started.md) next or jump to any topic on the left.
 
-Once a functioning cluster is achieved, users may choose to continue learning about parallel programming. First, start with [Theory](parallel-programming/theory.md).
+Once a functioning cluster is achieved, users may choose to continue learning about parallel programming. First, start with [Theory](parallel-programming/theory.md). Additionally, please take some time and give us some thoughts by filling out our [survey](https://msstate.co1.qualtrics.com/jfe/form/SV_9XlpnpwnBkzk0jY).
 
 ```{toctree}
 :maxdepth: 1
@@ -17,6 +17,7 @@ Once a functioning cluster is achieved, users may choose to continue learning ab
 
 about
 getting-started
+Survey <https://msstate.co1.qualtrics.com/jfe/form/SV_9XlpnpwnBkzk0jY>
 ```
 
 ```{toctree}
