@@ -2,7 +2,7 @@
 
 Boxocluster was created by John Bradley, Drew Helgerson, and students at the [Mississippi State University High Performance Computing Collaboratory (HPC2)](https://hpc.msstate.edu) for students at the university and is released to the public for all to benefit.
 
-If you have any questions, comments, or suggestions for improvement, feel free to send an email.
+If you have any questions, comments, or suggestions for improvement, feel free to send an email. Additionally, [a survey is available](https://msstate.co1.qualtrics.com/jfe/form/SV_9XlpnpwnBkzk0jY), and we would be grateful if you fill it out.
 
 Website content is licensed under CC BY-NC-SA 4.0. Code written by our contributors is distributed under MIT.
 
